@@ -1,5 +1,5 @@
 ﻿function Connect-GraphClientSecret {
-    <#
+	<#
 		.SYNOPSIS
 			Connects using a client secret.
 		
@@ -17,39 +17,48 @@
 
         .PARAMETER Scopes
             Generally doesn't need to be changed from the default 'https://graph.microsoft.com/.default'
+
+		.PARAMETER Resource
+			The resource the token grants access to.
+			Generally doesn't need to be changed from the default 'https://graph.microsoft.com/'
+			Only needed when connecting to another service.
             
 		.EXAMPLE
 			PS C:\> Connect-GraphClientSecret -ClientID '<ClientID>' -TenantID '<TenantID>' -ClientSecret $secret
 		
 			Connects to the specified tenant using the specified client and secret.
 	#>
-    [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $true)]
-        [string]
-        $ClientID,
+	[CmdletBinding()]
+	param (
+		[Parameter(Mandatory = $true)]
+		[string]
+		$ClientID,
 			
-        [Parameter(Mandatory = $true)]
-        [string]
-        $TenantID,
+		[Parameter(Mandatory = $true)]
+		[string]
+		$TenantID,
 			
-        [Parameter(Mandatory = $true)]
-        [securestring]
-        $ClientSecret,
+		[Parameter(Mandatory = $true)]
+		[securestring]
+		$ClientSecret,
 
-        [string[]]
-        $Scopes = 'https://graph.microsoft.com/.default'
-    )
+		[string[]]
+		$Scopes = 'https://graph.microsoft.com/.default',
+
+		[string]
+		$Resource = 'https://graph.microsoft.com/'
+	)
 		
-    process {
-        $body = @{
-            client_id     = $ClientID
-            client_secret = [PSCredential]::new('NoMatter', $ClientSecret).GetNetworkCredential().Password
-            scope         = $Scopes -join " "
-            grant_type    = 'client_credentials'
-        }
-        try { $authResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$TenantId/oauth2/token" -Body $body -ErrorAction Stop }
-        catch { throw }
+	process {
+		$body = @{
+			client_id     = $ClientID
+			client_secret = [PSCredential]::new('NoMatter', $ClientSecret).GetNetworkCredential().Password
+			scope         = $Scopes -join " "
+			grant_type    = 'client_credentials'
+			resource      = $Resource
+		}
+		try { $authResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$TenantId/oauth2/token" -Body $body -ErrorAction Stop }
+		catch { throw }
 		$script:token = $authResponse.access_token
-    }
+	}
 }
