@@ -17,6 +17,7 @@
 
         Converts the string "Hello World" to base 64.
     #>
+	[OutputType([string])]
 	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
