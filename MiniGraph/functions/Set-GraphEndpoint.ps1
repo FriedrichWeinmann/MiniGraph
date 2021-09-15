@@ -19,6 +19,7 @@
 
         Switch to using the beta graph endpoint
     #>
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '')]
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true, ParameterSetName = 'Default')]

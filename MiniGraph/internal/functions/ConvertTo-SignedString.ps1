@@ -31,6 +31,7 @@
 
         Signs the text stored in $token with the certificate stored in $cert
     #>
+	[OutputType([string])]
 	[CmdletBinding()]
 	param (
 		[Parameter(Mandatory = $true, ValueFromPipeline = $true)]
