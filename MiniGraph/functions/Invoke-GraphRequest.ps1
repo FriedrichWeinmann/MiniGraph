@@ -19,7 +19,7 @@
     
     .PARAMETER Body
         Any body to specify.
-        Must be a hashtable, will be converted to json.
+        Anything not a string, will be converted to json.
     
     .PARAMETER Raw
         Return the raw response, rather than processing the output.
@@ -44,7 +44,6 @@
         [string]
         $ContentType = 'application/json',
 
-        [Hashtable]
         $Body,
 
         [switch]
@@ -64,7 +63,10 @@
             Headers     = @{ Authorization = "Bearer $($script:Token)" }
             ContentType = $ContentType
         }
-        if ($Body) { $parameters.Body = $Body | ConvertTo-Json -Compress -Depth 99 }
+        if ($Body) {
+			if ($Body -is [string]) { $parameters.Body = $Body }
+			else { $parameters.Body = $Body | ConvertTo-Json -Compress -Depth 99 }
+		}
         do {
             try { $data = Invoke-RestMethod @parameters -ErrorAction Stop }
             catch { throw }
