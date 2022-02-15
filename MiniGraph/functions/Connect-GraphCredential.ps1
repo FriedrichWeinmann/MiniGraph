@@ -53,6 +53,6 @@
     }
     
 	try { $answer = Invoke-RestMethod -Method POST -Uri "https://login.microsoftonline.com/$TenantID/oauth2/v2.0/token" -Body $request -ErrorAction Stop }
-	catch { throw }
+	catch { $PSCmdlet.ThrowTerminatingError($_) }
 	$script:token = $answer.access_token
 }

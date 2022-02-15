@@ -67,5 +67,5 @@
 	}
 	$uri = "https://login.microsoftonline.com/$TenantID/oauth2/v2.0/token"
 	try { $script:token = (Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $header -ContentType 'application/x-www-form-urlencoded' -ErrorAction Stop).access_token }
-    catch { throw }
+    catch { $PSCmdlet.ThrowTerminatingError($_) }
 }
