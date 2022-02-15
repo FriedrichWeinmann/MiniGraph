@@ -58,7 +58,7 @@
 			resource      = $Resource
 		}
 		try { $authResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$TenantId/oauth2/token" -Body $body -ErrorAction Stop }
-		catch { throw }
+		catch { $PSCmdlet.ThrowTerminatingError($_) }
 		$script:token = $authResponse.access_token
 	}
 }
