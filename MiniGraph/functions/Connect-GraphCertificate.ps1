@@ -26,12 +26,19 @@
 	#>
 	[CmdletBinding()]
 	param (
+		[Parameter(Mandatory = $true)]
+		[ValidateScript({
+			if (-not $_.HasPrivateKey) { throw "Certificate has no private key!" }
+			$true
+		})]
 		[System.Security.Cryptography.X509Certificates.X509Certificate2]
 		$Certificate,
 
+		[Parameter(Mandatory = $true)]
 		[string]
 		$TenantID,
 
+		[Parameter(Mandatory = $true)]
 		[string]
 		$ClientID
 	)

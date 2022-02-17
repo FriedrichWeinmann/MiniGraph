@@ -51,10 +51,13 @@
 		$Encoding = [System.Text.Encoding]::UTF8
 	)
 
+	begin {
+		$privateKey = [System.Security.Cryptography.X509Certificates.RSACertificateExtensions]::GetRSAPrivateKey($Certificate)
+	}
 	process {
 		foreach ($entry in $Text) {
 			$inBytes = $Encoding.GetBytes($entry)
-			$outBytes = $Certificate.PrivateKey.SignData($inBytes, $Algorithm, $Padding)
+			$outBytes = $privateKey.SignData($inBytes, $Algorithm, $Padding)
 			[convert]::ToBase64String($outBytes)
 		}
 	}
