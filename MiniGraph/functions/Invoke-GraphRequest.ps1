@@ -26,6 +26,9 @@
     
     .PARAMETER NoPaging
         Only return the first set of data, rather than paging through the entire set.
+
+	.PARAMETER Header
+		Additional header entries to include beside authentication
     
     .EXAMPLE
         PS C:\> Invoke-GraphRequest -Query me
@@ -50,7 +53,10 @@
         $Raw,
 
         [switch]
-        $NoPaging
+        $NoPaging,
+
+		[hashtable]
+		$Header = @{ }
     )
 
     begin {
@@ -60,7 +66,7 @@
         $parameters = @{
             Uri         = "$($script:baseEndpoint)/$($Query.TrimStart("/"))"
             Method      = $Method
-            Headers     = @{ Authorization = "Bearer $($script:Token)" }
+            Headers     = @{ Authorization = "Bearer $($script:Token)" } + $Header
             ContentType = $ContentType
         }
         if ($Body) {
