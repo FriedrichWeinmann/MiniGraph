@@ -4,7 +4,7 @@
 RootModule = 'MiniGraph.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.1.4'
+ModuleVersion = '1.2.6'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -62,10 +62,12 @@ Description = 'Minimal query infrastructure for interacting with MS Graph'
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
 FunctionsToExport = @(
+	'Connect-GraphAzure'
     'Connect-GraphCertificate'
     'Connect-GraphClientSecret'
     'Connect-GraphCredential'
 	'Connect-GraphDeviceCode'
+	'Connect-GraphToken'
     'Invoke-GraphRequest'
     'Set-GraphEndpoint'
 )
