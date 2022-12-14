@@ -10,6 +10,11 @@
 	.PARAMETER Authority
 		Authority to connect to.
 		Defaults to: "https://graph.microsoft.com"
+
+	.PARAMETER ShowDialog
+		Whether to risk showing a dialog during authentication.
+		If set to never, it will fail if not possible to do silent authentication.
+		Defaults to: Auto
 	
 	.EXAMPLE
 		PS C:\> Connect-GraphAzure
@@ -19,7 +24,11 @@
 	[CmdletBinding()]
 	param (
 		[string]
-		$Authority = "https://graph.microsoft.com"
+		$Authority = "https://graph.microsoft.com",
+
+		[ValidateSet('Auto', 'Always', 'Never')]
+		[string]
+		$ShowDialog = 'Auto'
 	)
 
 	try { $azContext = Get-AzContext -ErrorAction Stop }
@@ -31,7 +40,7 @@
 			$azContext.Environment,
 			"$($azContext.Tenant.id)",
 			$null,
-			[Microsoft.Azure.Commands.Common.Authentication.ShowDialog]::Never,
+			$ShowDialog,
 			$null,
 			$Authority
 		)
