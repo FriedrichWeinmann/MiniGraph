@@ -69,6 +69,7 @@ FunctionsToExport = @(
 	'Connect-GraphDeviceCode'
 	'Connect-GraphToken'
     'Invoke-GraphRequest'
+    'Invoke-GraphRequestBatch'
     'Set-GraphEndpoint'
 )
 
