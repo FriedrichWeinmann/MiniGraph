@@ -66,7 +66,6 @@
         $parameters = @{
             Uri         = "$($script:baseEndpoint)/$($Query.TrimStart("/"))"
             Method      = $Method
-            Headers     = @{ Authorization = "Bearer $($script:Token)" } + $Header
             ContentType = $ContentType
         }
         if ($Body) {
@@ -74,6 +73,10 @@
 			else { $parameters.Body = $Body | ConvertTo-Json -Compress -Depth 99 }
 		}
         do {
+			try { Update-Token }
+			catch { throw }
+			$parameters.Headers = @{ Authorization = "Bearer $($script:Token)" } + $Header
+
             try { $data = Invoke-RestMethod @parameters -ErrorAction Stop }
             catch { throw }
             if ($Raw) { $data }

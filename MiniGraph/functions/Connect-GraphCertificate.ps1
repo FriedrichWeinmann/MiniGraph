@@ -15,6 +15,10 @@
     .PARAMETER ClientID
         The ClientID / ApplicationID of the application to connect as.
 
+	.PARAMETER NoReconnect
+		Disables automatic reconnection.
+		By default, MiniGraph will automatically try to reaquire a new token before the old one expires.
+
     .EXAMPLE
         PS C:\> $cert = Get-Item -Path 'Cert:\CurrentUser\My\082D5CB4BA31EED7E2E522B39992E34871C92BF5'
         PS C:\> Connect-GraphCertificate -TenantID '0639f07d-76e1-49cb-82ac-abcdefabcdefa' -ClientID '0639f07d-76e1-49cb-82ac-1234567890123' -Certificate $cert
@@ -40,7 +44,10 @@
 
 		[Parameter(Mandatory = $true)]
 		[string]
-		$ClientID
+		$ClientID,
+
+		[switch]
+		$NoReconnect
 	)
 
 	$jwtHeader = @{
@@ -75,4 +82,6 @@
 	$uri = "https://login.microsoftonline.com/$TenantID/oauth2/v2.0/token"
 	try { $script:token = (Invoke-RestMethod -Uri $uri -Method Post -Body $body -Headers $header -ContentType 'application/x-www-form-urlencoded' -ErrorAction Stop).access_token }
     catch { $PSCmdlet.ThrowTerminatingError($_) }
+
+	Set-ReconnectInfo -BoundParameters $PSBoundParameters -NoReconnect:$NoReconnect
 }
