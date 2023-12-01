@@ -18,7 +18,9 @@
 		The ID of the tenant connected to with this authentication request.
 	
 	.PARAMETER SelectAccount
-		As this flow supports single-sign-on, it will not prompt for anything if 
+		Forces account selection on logon.
+		As this flow supports single-sign-on, it will otherwise not prompt for anything if already signed in.
+		This could be a problem if you want to connect using another (e.g. an admin) account.
 	
 	.PARAMETER Scopes
         Generally doesn't need to be changed from the default 'https://graph.microsoft.com/.default'
