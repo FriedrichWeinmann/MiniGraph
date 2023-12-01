@@ -20,6 +20,10 @@
     
     .PARAMETER Scopes
         The permission scopes to request.
+
+	.PARAMETER NoReconnect
+		Disables automatic reconnection.
+		By default, MiniGraph will automatically try to reaquire a new token before the old one expires.
     
     .EXAMPLE
         PS C:\> Connect-GraphCredential -Credential max@contoso.com -ClientID $client -TenantID $tenant -Scopes 'user.read','user.readbasic.all'
@@ -41,7 +45,10 @@
 		$TenantID,
 		
 		[string[]]
-		$Scopes = 'user.read'
+		$Scopes = 'user.read',
+
+		[switch]
+		$NoReconnect
 	)
 	
 	$request = @{
@@ -55,4 +62,6 @@
 	try { $answer = Invoke-RestMethod -Method POST -Uri "https://login.microsoftonline.com/$TenantID/oauth2/v2.0/token" -Body $request -ErrorAction Stop }
 	catch { $PSCmdlet.ThrowTerminatingError($_) }
 	$script:token = $answer.access_token
+
+	Set-ReconnectInfo -BoundParameters $PSBoundParameters -NoReconnect:$NoReconnect
 }
