@@ -79,7 +79,7 @@
 		Start-Sleep -Seconds $initialResponse.interval
 		try { $authResponse = Invoke-RestMethod @paramRetrieve }
 		catch {
-			if ($_ -match '"error":"authorization_pending"') { continue }
+			if ($_ -match '"error":\s*"authorization_pending"') { continue }
 			$PSCmdlet.ThrowTerminatingError($_)
 		}
 		if ($authResponse) {
