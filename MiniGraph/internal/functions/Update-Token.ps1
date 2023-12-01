@@ -14,6 +14,7 @@
 		
 		Automatically reconnects if necessary, using the previous method of connecting.
 	#>
+	[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSUseShouldProcessForStateChangingFunctions", "")]
 	[CmdletBinding()]
 	param (
 		
