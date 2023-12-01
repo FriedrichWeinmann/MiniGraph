@@ -15,6 +15,11 @@
     .PARAMETER ClientID
         The ClientID / ApplicationID of the application to connect as.
 
+	.PARAMETER Scopes
+		The scopes to request when connecting.
+		IN Application flows, this only determines the service for which to retrieve the scopes already configured on the App Registration.
+		Defaults to graph API.
+
 	.PARAMETER NoReconnect
 		Disables automatic reconnection.
 		By default, MiniGraph will automatically try to reaquire a new token before the old one expires.
@@ -46,6 +51,9 @@
 		[string]
 		$ClientID,
 
+		[string[]]
+		$Scopes = 'https://graph.microsoft.com/.default',
+
 		[switch]
 		$NoReconnect
 	)
@@ -73,7 +81,7 @@
 		client_id             = $ClientID
 		client_assertion      = $jwt
 		client_assertion_type = 'urn:ietf:params:oauth:client-assertion-type:jwt-bearer'
-		scope                 = 'https://graph.microsoft.com/.default'
+		scope                 = $Scopes -join ' '
 		grant_type            = 'client_credentials'
 	}
 	$header = @{

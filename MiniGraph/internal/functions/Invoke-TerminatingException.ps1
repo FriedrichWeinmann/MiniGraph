@@ -23,6 +23,9 @@
 	.PARAMETER ErrorRecord
 		A full error record that was caught by the caller.
 		Use this when you want to rethrow an existing error.
+
+	.PARAMETER Target
+		The target of the exception.
 	
 	.EXAMPLE
 		PS C:\> Invoke-TerminatingException -Cmdlet $PSCmdlet -Message 'Unknown calling module'
@@ -44,7 +47,9 @@
 		$Category = [System.Management.Automation.ErrorCategory]::NotSpecified,
 		
 		[System.Management.Automation.ErrorRecord]
-		$ErrorRecord
+		$ErrorRecord,
+
+		$Target
 	)
 	
 	process{

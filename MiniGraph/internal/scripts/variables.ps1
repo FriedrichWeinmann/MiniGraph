@@ -11,3 +11,6 @@ $script:lastConnect = @{
 	Parameters = $null
 	Refresh    = $null
 }
+
+# Used for Browser-Based interactive logon
+$script:browserPath = 'C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe'
