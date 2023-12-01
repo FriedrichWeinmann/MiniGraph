@@ -21,6 +21,10 @@
 	.PARAMETER Scopes
 		The scopes to request
 		Defaults to: 'https://graph.microsoft.com/.default'
+
+	.PARAMETER NoReconnect
+		Disables automatic reconnection.
+		By default, MiniGraph will automatically try to reaquire a new token before the old one expires.
 	
 	.EXAMPLE
 		PS C:\> Connect-GraphToken -Token $token -TenantID $tenantID -ClientID $clientID -CLientSecret $secret
@@ -49,7 +53,10 @@
 		$ClientSecret,
         
 		[string[]]
-		$Scopes = 'https://graph.microsoft.com/.default'
+		$Scopes = 'https://graph.microsoft.com/.default',
+
+		[switch]
+		$NoReconnect
 	)
 
 	$body = @{
@@ -69,4 +76,6 @@
 
 	try { $script:token = Invoke-RestMethod @param -ErrorAction Stop }
 	catch { $PSCmdlet.ThrowTerminatingError($_) }
+
+	Set-ReconnectInfo -BoundParameters $PSBoundParameters -NoReconnect:$NoReconnect
 }

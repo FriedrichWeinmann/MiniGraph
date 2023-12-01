@@ -15,6 +15,10 @@
 		Whether to risk showing a dialog during authentication.
 		If set to never, it will fail if not possible to do silent authentication.
 		Defaults to: Auto
+
+	.PARAMETER NoReconnect
+		Disables automatic reconnection.
+		By default, MiniGraph will automatically try to reaquire a new token before the old one expires.
 	
 	.EXAMPLE
 		PS C:\> Connect-GraphAzure
@@ -28,7 +32,10 @@
 
 		[ValidateSet('Auto', 'Always', 'Never')]
 		[string]
-		$ShowDialog = 'Auto'
+		$ShowDialog = 'Auto',
+
+		[switch]
+		$NoReconnect
 	)
 
 	try { $azContext = Get-AzContext -ErrorAction Stop }
@@ -49,4 +56,6 @@
 	catch { $PSCmdlet.ThrowTerminatingError($_) }
 
 	$script:token = $result.AccessToken
+
+	Set-ReconnectInfo -BoundParameters $PSBoundParameters -NoReconnect:$NoReconnect
 }

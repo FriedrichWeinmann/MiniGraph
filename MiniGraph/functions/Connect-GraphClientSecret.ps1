@@ -22,6 +22,10 @@
 			The resource the token grants access to.
 			Generally doesn't need to be changed from the default 'https://graph.microsoft.com/'
 			Only needed when connecting to another service.
+
+		.PARAMETER NoReconnect
+			Disables automatic reconnection.
+			By default, MiniGraph will automatically try to reaquire a new token before the old one expires.
             
 		.EXAMPLE
 			PS C:\> Connect-GraphClientSecret -ClientID '<ClientID>' -TenantID '<TenantID>' -ClientSecret $secret
@@ -46,7 +50,10 @@
 		$Scopes = 'https://graph.microsoft.com/.default',
 
 		[string]
-		$Resource = 'https://graph.microsoft.com/'
+		$Resource = 'https://graph.microsoft.com/',
+
+		[switch]
+		$NoReconnect
 	)
 		
 	process {
@@ -60,5 +67,7 @@
 		try { $authResponse = Invoke-RestMethod -Method Post -Uri "https://login.microsoftonline.com/$TenantId/oauth2/token" -Body $body -ErrorAction Stop }
 		catch { $PSCmdlet.ThrowTerminatingError($_) }
 		$script:token = $authResponse.access_token
+
+		Set-ReconnectInfo -BoundParameters $PSBoundParameters -NoReconnect:$NoReconnect
 	}
 }
