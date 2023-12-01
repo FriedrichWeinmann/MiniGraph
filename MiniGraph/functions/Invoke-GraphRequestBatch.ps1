@@ -23,6 +23,8 @@
             $idToSp[$araCounter] = $sp
             $araCounter++
         }
+    .OUTPUTS
+        PSCustomObject with properties id and body to be able to match responses to requests.
     #>
     param
     (
@@ -35,8 +37,6 @@
     $counter = [pscustomobject] @{ Value = 0 }
     $batches = $Request | Group-Object -Property { [math]::Floor($counter.Value++ / $batchSize) } -AsHashTable
 
-    $batchResult = [System.Collections.ArrayList]::new()
-
     foreach ($batch in ($batches.GetEnumerator() | Sort-Object -Property Key))
     {
         [array] $innerResult = try
@@ -44,7 +44,7 @@
             $jsonbody = @{requests = [array]$batch.Value } | ConvertTo-Json -Depth 42 -Compress
             (Invoke-GraphRequest -Query '$batch' -Method Post -Body $jsonbody -ErrorAction Stop).responses
         }
-        catch [Microsoft.PowerShell.Commands.HttpResponseException]
+        catch
         {
             Write-Error -Message "Error sending batch: $($_.Exception.Message)" -TargetObject $jsonbody
         }
@@ -55,7 +55,7 @@
 
         if ($successRequests)
         {
-            $null = $batchResult.AddRange([array]$successRequests)
+            $successRequests | Select-Object id, @{ Name = 'body'; Expression = { $_.body } }
         }
 
         if ($throttledRequests)
@@ -66,17 +66,11 @@
             Start-Sleep -Seconds $interval
             $retry = $Request | Where-Object id -in $throttledRequests.id
 
-            if (-not $retry)
-            {
-                continue
-            }
-
             try
             {
-                $retriedResults = [array](Invoke-GraphRequestBatch -Name $Name -Request $retry -NoProgress -ErrorAction Stop).responses
-                $null = $batchResult.AddRange($retriedResults)
+                [array](Invoke-GraphRequestBatch -Request $retry -ErrorAction Stop).responses | Select-Object id, @{ Name = 'body'; Expression = { $_.body } }
             }
-            catch [Microsoft.PowerShell.Commands.HttpResponseException]
+            catch
             {
                 Write-Error -Message "Error sending retry batch: $($_.Exception.Message)" -TargetObject $retry
             }
@@ -87,6 +81,4 @@
             Write-Error -Message "Error in batch request $($failedRequest.id): $($failedRequest.body.error.message)"
         }
     }
-
-    $batchResult
 }
