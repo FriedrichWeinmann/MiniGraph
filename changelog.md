@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.3.13 (2023-12-03)
+
++ Upd: Invoke-GraphRequestBatch - simplified requests specification
+
 ## 1.3.12 (2023-12-01)
 
 + New: Connect-GraphBrowser - Interactive logon using the Authorization flow and browser. Supports SSO.

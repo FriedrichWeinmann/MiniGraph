@@ -4,7 +4,7 @@
 RootModule = 'MiniGraph.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.3.12'
+ModuleVersion = '1.3.13'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
