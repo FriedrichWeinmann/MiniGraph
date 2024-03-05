@@ -40,7 +40,7 @@
 		The path to the browser to use for the authentication flow.
 		Provide the full path to the executable.
 		The browser must accept the url to open as its only parameter.
-		Defaults to Edge.
+		Defaults to your default browser.
 	
 	.PARAMETER NoReconnect
 		Disables automatic reconnection.
@@ -74,7 +74,7 @@
 		$Resource = 'https://graph.microsoft.com/',
 
 		[string]
-		$Browser = $script:browserPath,
+		$Browser,
 
 		[switch]
 		$NoReconnect
@@ -124,7 +124,8 @@
 		catch { Invoke-TerminatingException -Cmdlet $PSCmdlet -Message "Failed to create local http listener on port $LocalPort. Use -LocalPort to select a different port. $_" -Category OpenError }
 
 		# Execute in default browser
-		& $Browser $uriFinal
+		if ($Browser) { & $Browser $uriFinal }
+		else { Start-Process $uriFinal }
 
 		# Get Result
 		$task = $http.GetContextAsync()

@@ -1,5 +1,11 @@
 ﻿# Changelog
 
+## 1.3.16 (2024-03-05)
+
++ New: Get-GraphToken - retrieve the currently used token
++ Upd: Connect-GraphBrowser - opens logon screen in the default browser by default
++ Fix: Invoke-GraphRequestBatch - retries stop failing
+
 ## 1.3.13 (2023-12-03)
 
 + Upd: Invoke-GraphRequestBatch - simplified requests specification

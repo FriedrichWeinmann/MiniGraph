@@ -189,7 +189,7 @@
 				}
 
 				try {
-                (MiniGraph\Invoke-GraphRequestBatch -Name $Name -Request $retry -NoProgress -ErrorAction Stop).responses
+                (MiniGraph\Invoke-GraphRequestBatch -Request $retry -ErrorAction Stop).responses
 				}
 				catch {
 					Write-Error -Message "Error sending retry batch: $($_.Exception.Message)" -TargetObject $retry
