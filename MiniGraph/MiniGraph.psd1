@@ -4,7 +4,7 @@
 RootModule = 'MiniGraph.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.3.13'
+ModuleVersion = '1.3.16'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,6 +69,7 @@ FunctionsToExport = @(
 	'Connect-GraphCredential'
 	'Connect-GraphDeviceCode'
 	'Connect-GraphToken'
+	'Get-GraphToken'
 	'Invoke-GraphRequest'
 	'Invoke-GraphRequestBatch'
 	'Set-GraphEndpoint'
