@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.3.17 (2024-03-13)
+
++ Upd: Invoke-GraphRequest - supports full http links as query
+
 ## 1.3.16 (2024-03-05)
 
 + New: Get-GraphToken - retrieve the currently used token

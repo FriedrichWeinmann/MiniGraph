@@ -8,6 +8,7 @@
     
     .PARAMETER Query
         The relative graph query with all conditions appended.
+		Uses the full query if the query starts with http:// or https://.
     
     .PARAMETER Method
         Which rest method to use.
@@ -68,6 +69,9 @@
             Method      = $Method
             ContentType = $ContentType
         }
+		if ($Query -match '^http://|https://') {
+			$parameters.Query = $Query
+		}
         if ($Body) {
 			if ($Body -is [string]) { $parameters.Body = $Body }
 			else { $parameters.Body = $Body | ConvertTo-Json -Compress -Depth 99 }
