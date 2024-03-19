@@ -1,5 +1,9 @@
 ﻿# Changelog
 
+## 1.3.18 (2024-03-19)
+
++ Fix: Invoke-GraphRequest - fails to execute queries starting with http
+
 ## 1.3.17 (2024-03-13)
 
 + Upd: Invoke-GraphRequest - supports full http links as query

@@ -70,7 +70,7 @@
             ContentType = $ContentType
         }
 		if ($Query -match '^http://|https://') {
-			$parameters.Query = $Query
+			$parameters.Uri = $Query
 		}
         if ($Body) {
 			if ($Body -is [string]) { $parameters.Body = $Body }
